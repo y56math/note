@@ -1,0 +1,361 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8
+
+% Template for the class file AJbook, originally designed for Chinese book ``代数学方法''.
+% Copyright 2018  李文威 (Wen-Wei Li).
+% Permission is granted to copy, distribute and/or modify this
+% document under the terms of the Creative Commons
+% Attribution 4.0 International (CC BY 4.0)
+% http://creativecommons.org/licenses/by/4.0/
+
+% 使用自定义的文档类 AJbook.cls. 自动载入 xeCJK. 需要额外档案如下:
+% font-setup-open.tex, coverpage.tex, titles-setup.tex, mycommand.sty, myarrows.sty
+% 文档类选项 (key/val 格式):
+% draftmark = true (未定稿, 底部显示日期) 或 false (成品), 默认 false,
+% colors = true (链接带颜色无框) 或 false (黑色无框), 默认 true,
+% traditional = true (繁体中文) 或 false (简体中文), 默认 false,
+% coverpage = 封面档档名, 默认为空 (此时不制作封面), 一般是 .tex 档, 若为 *.pdf 的形式则直接引入 PDF 页面.
+% fontsetup = 字体设置档档名,
+% titlesetup = 章节格式设置档名.
+
+% 注意: 如果文中未使用 \cite 和 \index 命令, 则可能报错.
+
+% 需动用 imakeidx + xindy (两份索引), biblatex + biber (书目). 
+% 索引用土法进行中文排序: 如 \index{zhongwen@中文} 等.
+\documentclass[
+%   draftmark = true,   % 草稿模式下, 每页底部将打印相关版本信息.
+%	traditional = true,
+%	colors = false,
+%	coverpage = coverpage.tex,
+%	coverpage = coverpage.pdf,
+%   geometry = b5,    % 版面设置, 目前仅容许 a4, b5, 默认 b5, 其它字串则不作自动设置.
+fontsetup = font-setup-open.tex,
+titlesetup = titles-setup.tex
+]{AJbook}
+% 可以修改章节编号的深度
+% \setcounter{secnumdepth}{3}
+
+% 必要时仅引入部分档案
+% \includeonly{}
+
+% 生成索引: 选用 xindy + imakeidx
+\usepackage[xindy, splitindex]{imakeidx}
+\makeindex[
+columns=2,
+program=truexindy,
+intoc=true,
+options=-M texindy -I xelatex -C utf8,
+title={名词索引}]	% 名词索引
+
+\usepackage[unicode, bookmarksnumbered]{hyperref}	% 启动超链接和 PDF 文档信息所需
+% 设置 PDF 文件信息
+\hypersetup{
+pdfauthor = {李文威 (Wen-Wei Li)},
+pdftitle = {AJbook 文档类模板},
+pdfkeywords = {Template},
+CJKbookmarks = true}
+
+% 用 bibLaTeX 生成参考文献, 作为示例, 这里引入的是 Al-jabr.bib.
+% 载入书目库: 文档类业已引入 biblatex + biber
+\addbibresource{note.bib}
+
+% 增加表格高度
+\renewcommand*\arraystretch{1.5}
+
+% 自订公式的编号 (非必要)
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\thesection--\arabic{equation}}
+
+% 自订 figure 的编号 (非必要)
+%\numberwithin{figure}{section}
+%\renewcommand{\thefigure}{\thechapter--\arabic{figure}}
+
+% 自订 table 的编号 (非必要)
+%\numberwithin{table}{section}
+%\renewcommand{\thetable}{\thechapter--\arabic{table}}
+
+\usepackage{physics}
+\usepackage{mycommand}				% 引入自定义的惯用的命令
+
+\begin{document}
+\frontmatter	% 制作封面和目录.
+% 注意: 为了简化, 本模板不含封面. 请通过文档类的参数进行设置.
+
+\mainmatter		% 正文开始：逐章引入 TeX 代码
+
+\part{量子信息}
+\chapter{本科光电毕设}
+\section[2022.10.14第一次]{2022.10.14第一次：Λ型三能级原子与光场Raman相互作用}
+本次考虑了Λ型三能级原子与光场Raman相互作用这一系统，欲求其有效哈密顿量。
+
+在量子力学中，掌握了系统的哈密顿量，通过薛定谔方程，（按理说）就掌握了系统演化的所有现象与特征。然而，哈密顿量的形式往往较为复杂，导致薛定谔方程难以求解。为了简化问题，我们可以通过两步求解系统的有效哈密顿量：
+\begin{enumerate}
+\item 对系统的坐标系（表象）进行变换，求出新表象下的哈密顿量，具体方法又分 a) 相互作用绘景法； b) 旋转坐标系法。
+\item 通过定理 \ref{heff}，求解系统的有效哈密顿量。其中在套完公式后，需要在大失谐情况下，认为激发态的出现概率约为0（这是因为此时哈密顿量的表示矩阵是分块对角阵，基态与激发态间已解耦），取出哈密顿量中仅含基态的项。
+\end{enumerate}
+
+以下对上述计算方法一一进行介绍。
+
+\subsection{表象变换（相互作用绘景法）}
+在正式计算前，先给出预备知识。首先是绘景变换：
+\begin{theorem}\label{hstohi}
+若一系统（在薛定谔绘景下）的哈密顿量$ H^S $可拆成近似项$ H_0^S $和微扰项$ V^S $之和，则系统在相互作用绘景下的哈密顿量为
+\begin{equation}
+H^\mathrm{I}=\eith{H_0^\mathrm{S}}V^S\enith{H_0^\mathrm{S}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+见陈童\cite{ctqm}。
+\end{proof}
+\begin{remark}
+一般地，哈密顿量的近似项（在矩阵表示下）为对角项，表示各个本征态自身的演化过程，且与时间无关；而微扰项为非对角项，表示不同本征态之间的耦合，且与时间有关。
+\end{remark}
+以上公式中的右边常用以下引理进行化简：
+\begin{lemma}[曾谨言习题4.37]\label{zjy437}
+对任意算符$ A,B $，有
+\begin{equation}\label{key}
+e^{\lambda A}Be^{-\lambda A}=\sum_{n=0}^{\infty}\frac{1}{n!}[A^{(n)},B].
+\end{equation}
+其中$ [A^{(n)},B] $通过递推公式定义：
+\begin{equation}\label{key}
+[A^{(0)},B]=B,\quad [A^{(n+1)},B]=[A,[A^{(n)},B]].
+\end{equation}
+一般计算时有$ [A,B]=B $，此时
+\begin{equation}\label{key}
+e^{\lambda A}Be^{-\lambda A}=e^{\lambda B}.
+\end{equation}
+特别地，当用相互作用绘景计算微扰时，常用下式
+\begin{equation}\label{key}
+e^{\lambda\ketbra{a}{a}}\ketbra{a}{b}e^{-\lambda\ketbra{a}{a}}=e^{\lambda\ketbra{a}{b}}.
+\end{equation}
+\end{lemma}
+\subsection{表象变换（旋转坐标系法）}
+旋转坐标系：取一算符$ A $，可将该系统的量子态从$ \ket{\psi} $变为$ \ket{\psi}_R=\mathrm{e}^{\mathrm{i}tA}\ket{\psi} $。显然$ \mathrm{e}^{\mathrm{i}tA} $是幺正变换。求导得
+\begin{equation}\label{key}
+\begin{gathered}
+\mathrm{i}\hbar\frac{\mathrm{d}\ket{\psi_R}}{\mathrm{d}t}
+=\mathrm{i}\hbar\left(\mathrm{e}^{\mathrm{i}tA}\frac{\mathrm{d}\ket{\psi}}{\mathrm{d}t}+\mathrm{i}A\mathrm{e}^{\mathrm{i}tA}\ket{\psi}\right)
+=\mathrm{e}^{\mathrm{i}tA}H\ket{\psi}-\hbar A\mathrm{e}^{\mathrm{i}tA}\ket{\psi}\\
+=(\mathrm{e}^{\mathrm{i}tA}H\mathrm{e}^{-\mathrm{i}tA}-\hbar A)\mathrm{e}^{\mathrm{i}tA}\ket{\psi}
+=(\mathrm{e}^{\mathrm{i}tA}H\mathrm{e}^{-\mathrm{i}tA}-\hbar A)\ket{\psi_R}.
+\end{gathered}
+\end{equation}
+可以看出，经过坐标变换，哈密顿量由$ H $变为了$ H_R=\mathrm{e}^{\mathrm{i}tA}H\mathrm{e}^{-\mathrm{i}tA}-\hbar A $。结合引理 \ref{zjy437} 可知，选取合适的$ A $可使哈密顿量得到简化。
+
+知乎文章 \cite{rotatecoordsys} 中以具有如下形式哈密顿量的二能级系统为例：
+\begin{equation}\label{key}
+H=V\mathrm{e}^{\mathrm{i}t\delta}\ketbra{g}{e}+\hc
+=\begin{bmatrix}
+&V\mathrm{e}^{-\mathrm{i}t\delta}\\
+V\mathrm{e}^{\mathrm{i}t\delta}&\\
+\end{bmatrix}
+\end{equation}
+选取$ A= \frac{1}{2}\delta\sigma_z=\frac{1}{2}\delta(\ketbra{e}{e}-\ketbra{g}{g}) $，则
+\begin{equation}\label{key}
+\begin{gathered}
+H_R=\mathrm{e}^{\mathrm{i}t\frac{1}{2}\delta(\ketbra{e}{e}-\ketbra{g}{g})}(V\mathrm{e}^{\mathrm{i}t\delta}\ketbra{g}{e}+\hc)\mathrm{e}^{\cdots}-\frac{1}{2}\hbar\delta(\ketbra{e}{e}-\ketbra{g}{g})\\
+=(V\ketbra{g}{e}+\hc)-\frac{1}{2}\hbar\delta(\ketbra{e}{e}-\ketbra{g}{g})
+\end{gathered}
+\end{equation}
+可见，在这一幺正变换下，非对角项的相位消失，而代价是在相应的对角项中出现了$ \pm\frac{1}{2}\hbar\delta $。上式用矩阵形式表示为
+\begin{equation}\label{key}
+\begin{bmatrix}
+&V\mathrm{e}^{-\mathrm{i}t\delta}\\
+V\mathrm{e}^{\mathrm{i}t\delta}&\\
+\end{bmatrix}\to
+\begin{bmatrix}
+\frac{1}{2}\hbar\delta & V \\
+V & -\frac{1}{2}\hbar\delta
+\end{bmatrix}
+\end{equation}
+实际上，$ A $可以更简单地取$ A= \delta\ketbra{e}{e} $和$ A= \delta\ketbra{g}{g} $，可分别得到(Todo!)
+\begin{equation}\label{key}
+\begin{bmatrix}
+&V\mathrm{e}^{-\mathrm{i}t\delta}\\
+V\mathrm{e}^{\mathrm{i}t\delta}&\\
+\end{bmatrix}\to
+\begin{bmatrix}
+\frac{1}{2}\hbar\delta & V \\
+V & -\frac{1}{2}\hbar\delta
+\end{bmatrix},\quad
+\begin{bmatrix}
+&V\mathrm{e}^{-\mathrm{i}t\delta}\\
+V\mathrm{e}^{\mathrm{i}t\delta}&\\
+\end{bmatrix}\to
+\begin{bmatrix}
+\frac{1}{2}\hbar\delta & V \\
+V & -\frac{1}{2}\hbar\delta
+\end{bmatrix}
+\end{equation}
+下面举出更多的坐标系变换例子（第一个例子是刚刚计算的；第二、三个例子见第二次内容，取$ \hbar=1 $）：
+\begin{equation}\label{key}
+\begin{gathered}
+\begin{bmatrix}
+&V\mathrm{e}^{-\mathrm{i}t\delta}\\
+V\mathrm{e}^{\mathrm{i}t\delta}&\\
+\end{bmatrix}\to
+\begin{bmatrix}
+\frac{1}{2}\hbar\delta & V \\
+V & -\frac{1}{2}\hbar\delta
+\end{bmatrix},\quad
+\begin{bmatrix}
+ & \omega_j\mathrm{e}^{-\mathrm{i}t\delta} &  \\
+\omega_j\mathrm{e}^{\mathrm{i}t\delta} &  & \omega_p\mathrm{e}^{\mathrm{i}t\Delta} \\
+ & \omega_p\mathrm{e}^{-\mathrm{i}t\Delta} & 
+\end{bmatrix}\to
+\begin{bmatrix}
+\delta & \omega_j &  \\
+\omega_j &  & \omega_p \\
+ & \omega_p & \Delta
+\end{bmatrix},\\
+\begin{bmatrix}
+ &  &  & \omega\mathrm{e}^{-\mathrm{i}t\delta} &  \\
+ &  & \omega_p &  &  \\
+ & \omega_p &  & \omega_p &  \\
+\omega\mathrm{e}^{\mathrm{i}t\delta} &  & \omega_p &  & \omega\mathrm{e}^{\mathrm{i}t\delta} \\
+ &  &  & \omega\mathrm{e}^{-\mathrm{i}t\delta} & 
+\end{bmatrix}\to
+\begin{bmatrix}
+\delta &  &  & \omega &  \\
+ &  & \omega_p &  &  \\
+ & \omega_p &  & \omega_p &  \\
+\omega &  & \omega_p &  & \omega \\
+ &  &  & \omega & \delta
+\end{bmatrix}
+\end{gathered}
+\end{equation}
+知乎文章 \cite{rotatecoordsys} 解释了旋转坐标系法的物理图景。
+
+\subsection{大失谐近似求有效哈密顿量}
+\begin{lemma}[有效哈密顿量公式]\label{heff}
+当系统在相互作用绘景下表示的哈密顿量可表示为
+\begin{equation}\label{key}
+H^{\mathrm{I}}=\sum_{n}h_ne^{it\omega_n}+\hc
+\end{equation}
+时，其有效哈密顿量为
+\begin{equation}\label{key}
+H_{\eff}=\sum_{m,n}\frac{1}{\hbar}\frac{1}{2}\left(\frac{1}{\omega_m}+\frac{1}{\omega_n}\right)[h_m^\dagger,h_n]e^{it(\omega_m-\omega_n)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+这是论文\cite{James2007EffectiveHT}的主要结果，也可见\cite{zzmqo}的附录。
+\end{proof}
+
+现考虑Λ型三能级原子（即有基态$ \ket{g},\ket{e} $和激发态$ \ket{i} $）与光场（光频率为$ \omega $）的Raman相互作用，欲求其有效哈密顿量。
+
+此类光与物质相互作用是量子光学的核心问题，有半经典理论和全量子理论两种处理方式。其区别在于：半经典理论将其原子视为量子化的（原子在分立的能级之间跃迁），而光场（电磁场）视为经典场（用频率、场强、电偶极矩等描述）；而全量子理论将原子和光场均视为量子化的，光场用产生/湮灭算符描述。在半经典理论中，本系统的哈密顿量为
+\begin{equation}\label{key}
+H=\omega_g\ketbra{g}{g}+\omega_i\ketbra{i}{i}+\omega a^\dagger a+(\lambda_1\eit{\omega}\ketbra{g}{i}+\lambda_2\eit{\omega}\ketbra{e}{i}+\hc)
+\end{equation}
+在全量子理论中，其哈密顿量为
+\begin{equation}\label{key}
+H=\omega_g\ketbra{g}{g}+\omega_i\ketbra{i}{i}+\omega_e\ketbra{e}{e}+\omega a^\dagger a+(\lambda_1a^\dagger\ketbra{g}{i}+\lambda_2a^\dagger\ketbra{e}{i}+\hc)
+\end{equation}
+注意$ \ketbra{a}{b} $表示从$ \ket{b} $到$ \ket{a} $的跃迁；$ a^\dagger $和$ a $表示光子的产生与湮灭，如$ \lambda_1a^\dagger\ketbra{g}{i} $表示$ \ket{i} $态下落到$ \ket{g} $态，同时放出一个光子（从而能量守恒），该过程的（耦合）强度为$ \lambda_1 $。实际上，能量不守恒的过程（如$ \lambda_1a\ketbra{g}{i} $）也可能发生，但概率很小，不予考虑（即\emph{旋波近似}(rotating wave approximation)）。
+本次计算采用全量子理论计算，而以后将采取半经典理论。
+
+由原始哈密顿量求有效哈密顿量的步骤如下：
+\begin{enumerate}
+\item 找出哈密顿量的近似项$ H_0^S $和微扰项$ V^S $，由定理 \ref{hstohi} 算出相互作用绘景下的哈密顿量$ H^\mathrm{I} $；
+\item 将$ H^\mathrm{I} $左边整理成定理 \ref{heff} 中等式左边的形式进行计算，再考虑大失谐情况，忽略含激发态$ \ket{i} $的项，得到有效哈密顿量$ H_{\eff} $。
+\end{enumerate}
+在本问题中，利用定理 \ref{hstohi}，得相互作用绘景下的哈密顿量为
+\begin{equation}\label{key}
+H^\mathrm{I}=e^{it(\omega-\omega_i+\omega_g)}\lambda_1 a^\dagger\ketbra{g}{i}+e^{it(\omega-\omega_i+\omega_e)}\lambda_2 a^\dagger\ketbra{e}{i}+\hc.
+\end{equation}
+而有效哈密顿量为
+\begin{equation}\label{key}
+H_{\eff}=\frac{1}{\hbar\Delta}a^\dagger a\left(\lambda_1^2\ketbra{g}{g}+\lambda_2^2\ketbra{e}{e}+\lambda_1\lambda_2(\ketbra{e}{g}+\hc)\right).
+\end{equation}
+\section[2022.10.19第二次]{2022.10.19第二次：两个Λ型里德堡三能级原子与光场Raman相互作用}
+在上一次推导的基础上，我们将原子由一个加到两个，且认为原子的激发态为里德堡(Rydberg)态（即主量子数$ n $很大的态），此时将出现一些新的物理现象：
+\begin{enumerate}
+\item 每个原子的量子态通过直积得到总的量子态，可能产生纠缠效应（量子信息的核心）；
+\item 由于$ n\gg 1 $，此时激发态的相邻能级间隔近似相等，可发生偶极偶极相互作用（dipole-dipole interaction, dd）或范德瓦尔斯相互作用（van der Vaals interaction, vdW）。
+\end{enumerate}
+接下来同样求解该系统的有效哈密顿量，主要步骤如下：
+\begin{enumerate}
+\item 不考虑vdW，写出每个原子原始的哈密顿量$ H_{\mathrm{novdW},j}^\mathrm{S} $；
+\item 不考虑vdW，将$ H_{\mathrm{novdW},j}^\mathrm{S} $的对角项视为近似项，非对角项视为微扰项，变换绘景，写出每个原子在相互作用绘景下的哈密顿量$ H_{\mathrm{novdW},j}^\mathrm{I} $；
+\item 不考虑vdW，写出整个系统在相互作用绘景下的哈密顿量$ H_{\mathrm{novdW}}^\mathrm{I} $；
+\item 写出偶极偶极相互作用和范德瓦尔斯相互作用的哈密顿量$ H_{\mathrm{dd}},H_{\mathrm{vdW}} $；
+\item 将$ H_{\mathrm{novdW}}^\mathrm{I} $视为近似项，$ H_{\mathrm{vdW}} $视为微扰项，再次变换绘景，并利用旋波近似等化简得到哈密顿量$ H^{\mathrm{II}} $；
+\item 通过求解特征方程，将$ H^{\mathrm{II}} $中含的$ \omega_p $项对应的子矩阵对角化，并将这一（$ H^{\mathrm{II}} $以归一化特征向量为基的）对角矩阵视为近似项，将该基下的含$ \omega_j $项视为微扰项，再次变换绘景得到哈密顿量$ H^{\mathrm{III}} $；
+\item 最后，通过定理 \ref{heff} 结合大失谐条件求得有效哈密顿量$ H_{\mathrm{eff}} $。
+\end{enumerate}
+\subsection{第一步}
+\begin{equation}\label{key}
+H_{\mathrm{novdW},j}^\mathrm{S}=\omega_g\ketbra{g}{g}_j+\omega_i\ketbra{r}{r}_j+\omega_e\ketbra{e}{e}_j+\omega a^\dagger a+(\lambda_1a^\dagger\ketbra{g}{r}_j+\lambda_2a^\dagger\ketbra{e}{r}_j+\hc)
+\end{equation}
+\subsection{第二步}
+\begin{multline}
+H_{\mathrm{novdW},j}^\mathrm{I}=\mathrm{e}^{\mathrm{i}t(\omega_j-\omega_r+\omega_g)}\lambda_1 a^\dagger\ketbra{g}{r}_j+\mathrm{e}^{\mathrm{i}t(\omega_p-\omega_r+\omega_e)}\lambda_2 a^\dagger\ketbra{e}{r}_j+\hc.
+\\:=\mathrm{e}^{\mathrm{i}t\delta}\lambda_1 a^\dagger\ketbra{g}{r}_j+\mathrm{e}^{\mathrm{i}t\Delta}\lambda_2 a^\dagger\ketbra{e}{r}_j+\hc.
+\end{multline}
+\begin{equation}
+H_{\mathrm{novdW},j}^\mathrm{I}=\mathrm{e}^{\mathrm{i}t\delta}\omega_j\ketbra{g}{r}_j+\mathrm{e}^{\mathrm{i}t\Delta}\omega_p\ketbra{e}{r}_j+\hc.
+\end{equation}
+\subsection{第三步}
+\begin{multline}
+H^\mathrm{I}
+=\omega_1\mathrm{e}^{\mathrm{i}t\delta}\ketbra{gg}{rg}
++\omega_1\mathrm{e}^{\mathrm{i}t\delta}\ketbra{ge}{re}
++\omega_1\mathrm{e}^{\mathrm{i}t\delta}\ketbra{gr}{rr}\\
++\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{eg}{rg}
++\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{ee}{re}
++\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{er}{rr}\\
++\omega_2\mathrm{e}^{\mathrm{i}t\delta}\ketbra{gg}{gr}
++\omega_2\mathrm{e}^{\mathrm{i}t\delta}\ketbra{eg}{er}
++\omega_2\mathrm{e}^{\mathrm{i}t\delta}\ketbra{rg}{rr}\\
++\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{ge}{gr}
++\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{ee}{er}
++\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{re}{rr}
++\hc.
+\end{multline}
+\subsection{第四步}
+\begin{equation}\label{key}
+H_{\mathrm{dd}}=J(\ketbra{rr}{+}+\hc)
+\end{equation}
+\begin{equation}\label{key}
+H_{\mathrm{vdW}}=\mathcal{U}\ketbra{rr}{rr}
+\end{equation}
+\subsection{第五步}
+\begin{equation}\label{key}
+H^{\mathrm{II}}=\omega_1\mathrm{e}^{\mathrm{it\delta}}\ketbra{ge}{re}
++\omega_p\ketbra{er}{rr}
++\omega_2\mathrm{e}^{\mathrm{it\delta}}\ketbra{eg}{er}
++\omega_p\ketbra{re}{rr}+\hc
+\end{equation}
+\subsection{第六步}
+\begin{multline}
+H^{\mathrm{III}}=\hbar\omega\Bigg(\ket{ge}\left(\frac{1}{2}\bra{\psi_+}\mathrm{e}^{\mathrm{i}t(\delta-\sqrt{2}\omega_p)}-\frac{1}{\sqrt{2}}\bra{\psi_0}\eit{\delta}+\frac{1}{2}\bra{\psi_-}\eit{(\delta+\sqrt{2}\omega_p)}\right)\\
++\ket{eg}\left(\frac{1}{2}\bra{\psi_+}\mathrm{e}^{\mathrm{i}t(\delta-\sqrt{2}\omega_p)}+\frac{1}{\sqrt{2}}\bra{\psi_0}\eit{\delta}+\frac{1}{2}\bra{\psi_-}\eit{(\delta+\sqrt{2}\omega_p)}\right)\Bigg)+\hc
+\end{multline}
+\subsection{第七步}
+\begin{equation}\label{key}
+H_{\eff}=\hbar\omega\Bigg(	cv\Bigg)
+\end{equation}
+\section[2022.10.28第三次]{2022.10.28第三次：SWAP门的实现}
+\part{杂项}
+在需要严格区分左乘与右乘、矩阵维数的情况下，求导公式为：
+\begin{equation}\label{key}
+(fg)'=fg'+f'g,\quad (f(g(x)))'=g'(x)f'(g(x)).
+\end{equation}
+应用：如量子力学旋转坐标系、$ |x|^p $的求导。
+% % % % % % % % % %
+\appendix
+
+% % % % % % % % % %
+\backmatter
+% 使用 bibLaTeX 制作书目
+\printbibliography[heading=bibintoc]
+
+% 图, 表索引. 可有可无.
+\listoffigures
+\listoftables
+
+% 制作索引 (用 imakeidx 的功能可以制作多份)
+{\footnotesize
+\indexprologue{中文术语按汉语拼音排序.}
+\printindex}
+\end{document}
