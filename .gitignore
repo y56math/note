@@ -1,3 +1,8 @@
+## yzy
+*.bak0
+*.bak1
+/figures
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

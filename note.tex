@@ -90,27 +90,23 @@ CJKbookmarks = true}
 
 在量子力学中，掌握了系统的哈密顿量，通过薛定谔方程，（按理说）就掌握了系统演化的所有现象与特征。然而，哈密顿量的形式往往较为复杂，导致薛定谔方程难以求解。为了简化问题，我们可以通过两步求解系统的有效哈密顿量：
 \begin{enumerate}
-\item 对系统的坐标系（表象）进行变换，求出新表象下的哈密顿量，具体方法又分 a) 相互作用绘景法； b) 旋转坐标系法。
-\item 通过定理 \ref{heff}，求解系统的有效哈密顿量。其中在套完公式后，需要在大失谐情况下，认为激发态的出现概率约为0（这是因为此时哈密顿量的表示矩阵是分块对角阵，基态与激发态间已解耦），取出哈密顿量中仅含基态的项。
+\item 对系统的坐标系（表象）进行变换，求出新表象下的哈密顿量，使得哈密顿量具有 \ref{heff} 的形式，且表示矩阵的阶数尽可能低。具体方法又分 a) 相互作用绘景法； b) 旋转坐标法； c) 简正坐标法。
+\item 套定理 \ref{heff} 的公式，得到的哈密顿量的表示矩阵是分块对角阵，基态与激发态间已解耦，取出哈密顿量中仅含基态的项（大失谐近似），得到系统的有效哈密顿量。
 \end{enumerate}
 
 以下对上述计算方法一一进行介绍。
 
-\subsection{表象变换（相互作用绘景法）}
-在正式计算前，先给出预备知识。首先是绘景变换：
-\begin{theorem}\label{hstohi}
-若一系统（在薛定谔绘景下）的哈密顿量$ H^S $可拆成近似项$ H_0^S $和微扰项$ V^S $之和，则系统在相互作用绘景下的哈密顿量为
-\begin{equation}
-H^\mathrm{I}=\eith{H_0^\mathrm{S}}V^S\enith{H_0^\mathrm{S}}.
+\subsection{表象变换（旋转坐标法）}
+取一算符$ H_R $，可将该系统的量子态从$ \ket{\psi} $变为$ \ket{\psi_R}=\eith{H_R}\ket{\psi} $。显然$ \eith{H_R} $是幺正变换。求导得
+\begin{equation}\label{key}
+\begin{gathered}
+\mathrm{i}\hbar\frac{\mathrm{d}\ket{\psi_R}}{\mathrm{d}t}
+=\mathrm{i}\hbar\left(\frac{\mathrm{i}}{\hbar}H_R\eith{H_R}\ket{\psi}+\eith{H_R}\frac{\mathrm{d}\ket{\psi}}{\mathrm{d}t}\right)\\
+=-H_R\eith{H_R}\ket{\psi}+\eith{H_R}H\enith{H_R}\eith{H_R}\ket{\psi}
+=(\eith{H_R}H\enith{H_R}-H_R)\ket{\psi_R}.
+\end{gathered}
 \end{equation}
-\end{theorem}
-\begin{proof}
-见陈童\cite{ctqm}。
-\end{proof}
-\begin{remark}
-一般地，哈密顿量的近似项（在矩阵表示下）为对角项，表示各个本征态自身的演化过程，且与时间无关；而微扰项为非对角项，表示不同本征态之间的耦合，且与时间有关。
-\end{remark}
-以上公式中的右边常用以下引理进行化简：
+可以看出，经过坐标变换，哈密顿量由$ H $变为了$ \eith{H_R}H\enith{H_R}-H_R $。以上公式中的右边常用以下引理进行化简：
 \begin{lemma}[曾谨言习题4.37]\label{zjy437}
 对任意算符$ A,B $，有
 \begin{equation}\label{key}
@@ -126,28 +122,16 @@ e^{\lambda A}Be^{-\lambda A}=e^{\lambda B}.
 \end{equation}
 特别地，当用相互作用绘景计算微扰时，常用下式
 \begin{equation}\label{key}
-e^{\lambda\ketbra{a}{a}}\ketbra{a}{b}e^{-\lambda\ketbra{a}{a}}=e^{\lambda\ketbra{a}{b}}.
+e^{\lambda\ketbra{a}{a}}\ketbra{a}{b}e^{-\lambda\ketbra{a}{a}}=e^{\lambda}\ketbra{a}{b}.
 \end{equation}
 \end{lemma}
-\subsection{表象变换（旋转坐标系法）}
-旋转坐标系：取一算符$ A $，可将该系统的量子态从$ \ket{\psi} $变为$ \ket{\psi}_R=\mathrm{e}^{\mathrm{i}tA}\ket{\psi} $。显然$ \mathrm{e}^{\mathrm{i}tA} $是幺正变换。求导得
-\begin{equation}\label{key}
-\begin{gathered}
-\mathrm{i}\hbar\frac{\mathrm{d}\ket{\psi_R}}{\mathrm{d}t}
-=\mathrm{i}\hbar\left(\mathrm{e}^{\mathrm{i}tA}\frac{\mathrm{d}\ket{\psi}}{\mathrm{d}t}+\mathrm{i}A\mathrm{e}^{\mathrm{i}tA}\ket{\psi}\right)
-=\mathrm{e}^{\mathrm{i}tA}H\ket{\psi}-\hbar A\mathrm{e}^{\mathrm{i}tA}\ket{\psi}\\
-=(\mathrm{e}^{\mathrm{i}tA}H\mathrm{e}^{-\mathrm{i}tA}-\hbar A)\mathrm{e}^{\mathrm{i}tA}\ket{\psi}
-=(\mathrm{e}^{\mathrm{i}tA}H\mathrm{e}^{-\mathrm{i}tA}-\hbar A)\ket{\psi_R}.
-\end{gathered}
-\end{equation}
-可以看出，经过坐标变换，哈密顿量由$ H $变为了$ H_R=\mathrm{e}^{\mathrm{i}tA}H\mathrm{e}^{-\mathrm{i}tA}-\hbar A $。结合引理 \ref{zjy437} 可知，选取合适的$ A $可使哈密顿量得到简化。
 
-知乎文章 \cite{rotatecoordsys} 中以具有如下形式哈密顿量的二能级系统为例：
+知乎文章 \cite{355327986} 中以具有如下形式哈密顿量的二能级系统为例：
 \begin{equation}\label{key}
 H=V\mathrm{e}^{\mathrm{i}t\delta}\ketbra{g}{e}+\hc
 =\begin{bmatrix}
-&V\mathrm{e}^{-\mathrm{i}t\delta}\\
-V\mathrm{e}^{\mathrm{i}t\delta}&\\
+              & V\mathrm{e}^{-\mathrm{i}t\delta} \\
+V\mathrm{e}^{\mathrm{i}t\delta} &                                  \\
 \end{bmatrix}
 \end{equation}
 选取$ A= \frac{1}{2}\delta\sigma_z=\frac{1}{2}\delta(\ketbra{e}{e}-\ketbra{g}{g}) $，则
@@ -160,72 +144,140 @@ H_R=\mathrm{e}^{\mathrm{i}t\frac{1}{2}\delta(\ketbra{e}{e}-\ketbra{g}{g})}(V\mat
 可见，在这一幺正变换下，非对角项的相位消失，而代价是在相应的对角项中出现了$ \pm\frac{1}{2}\hbar\delta $。上式用矩阵形式表示为
 \begin{equation}\label{key}
 \begin{bmatrix}
-&V\mathrm{e}^{-\mathrm{i}t\delta}\\
-V\mathrm{e}^{\mathrm{i}t\delta}&\\
+              & V\mathrm{e}^{-\mathrm{i}t\delta} \\
+V\mathrm{e}^{\mathrm{i}t\delta} &                                  \\
 \end{bmatrix}\to
 \begin{bmatrix}
-\frac{1}{2}\hbar\delta & V \\
-V & -\frac{1}{2}\hbar\delta
+\frac{1}{2}\hbar\delta & V                       \\
+V                      & -\frac{1}{2}\hbar\delta
 \end{bmatrix}
 \end{equation}
 实际上，$ A $可以更简单地取$ A= \delta\ketbra{e}{e} $和$ A= \delta\ketbra{g}{g} $，可分别得到(Todo!)
 \begin{equation}\label{key}
 \begin{bmatrix}
-&V\mathrm{e}^{-\mathrm{i}t\delta}\\
-V\mathrm{e}^{\mathrm{i}t\delta}&\\
+              & V\mathrm{e}^{-\mathrm{i}t\delta} \\
+V\mathrm{e}^{\mathrm{i}t\delta} &                                  \\
 \end{bmatrix}\to
 \begin{bmatrix}
-\frac{1}{2}\hbar\delta & V \\
-V & -\frac{1}{2}\hbar\delta
+\frac{1}{2}\hbar\delta & V                       \\
+V                      & -\frac{1}{2}\hbar\delta
 \end{bmatrix},\quad
 \begin{bmatrix}
-&V\mathrm{e}^{-\mathrm{i}t\delta}\\
-V\mathrm{e}^{\mathrm{i}t\delta}&\\
+              & V\mathrm{e}^{-\mathrm{i}t\delta} \\
+V\mathrm{e}^{\mathrm{i}t\delta} &                                  \\
 \end{bmatrix}\to
 \begin{bmatrix}
-\frac{1}{2}\hbar\delta & V \\
-V & -\frac{1}{2}\hbar\delta
+\frac{1}{2}\hbar\delta & V                       \\
+V                      & -\frac{1}{2}\hbar\delta
 \end{bmatrix}
 \end{equation}
 下面举出更多的坐标系变换例子（第一个例子是刚刚计算的；第二、三个例子见第二次内容，取$ \hbar=1 $）：
 \begin{equation}\label{key}
 \begin{gathered}
 \begin{bmatrix}
-&V\mathrm{e}^{-\mathrm{i}t\delta}\\
-V\mathrm{e}^{\mathrm{i}t\delta}&\\
+               & V\mathrm{e}^{-\mathrm{i}t\delta} \\
+V\mathrm{e}^{\mathrm{i}t\delta} &                                  \\
 \end{bmatrix}\to
 \begin{bmatrix}
-\frac{1}{2}\hbar\delta & V \\
-V & -\frac{1}{2}\hbar\delta
+\frac{1}{2}\hbar\delta & V                       \\
+V                      & -\frac{1}{2}\hbar\delta
 \end{bmatrix},\quad
 \begin{bmatrix}
- & \omega_j\mathrm{e}^{-\mathrm{i}t\delta} &  \\
-\omega_j\mathrm{e}^{\mathrm{i}t\delta} &  & \omega_p\mathrm{e}^{\mathrm{i}t\Delta} \\
- & \omega_p\mathrm{e}^{-\mathrm{i}t\Delta} & 
+                      & \omega_j\mathrm{e}^{-\mathrm{i}t\delta} &                                        \\
+\omega_j\mathrm{e}^{\mathrm{i}t\delta} &                                         & \omega_p\mathrm{e}^{\mathrm{i}t\Delta} \\
+                      & \omega_p\mathrm{e}^{-\mathrm{i}t\Delta} &
 \end{bmatrix}\to
 \begin{bmatrix}
-\delta & \omega_j &  \\
-\omega_j &  & \omega_p \\
- & \omega_p & \Delta
+\delta   & \omega_j &          \\
+\omega_j &          & \omega_p \\
+& \omega_p & \Delta
 \end{bmatrix},\\
 \begin{bmatrix}
- &  &  & \omega\mathrm{e}^{-\mathrm{i}t\delta} &  \\
- &  & \omega_p &  &  \\
- & \omega_p &  & \omega_p &  \\
-\omega\mathrm{e}^{\mathrm{i}t\delta} &  & \omega_p &  & \omega\mathrm{e}^{\mathrm{i}t\delta} \\
- &  &  & \omega\mathrm{e}^{-\mathrm{i}t\delta} & 
+                    &          &          & \omega\mathrm{e}^{-\mathrm{i}t\delta} &                                      \\
+                    &          & \omega_p &                                       &                                      \\
+                    & \omega_p &          & \omega_p                              &                                      \\
+\omega\mathrm{e}^{\mathrm{i}t\delta} &          & \omega_p &                                       & \omega\mathrm{e}^{\mathrm{i}t\delta} \\
+                    &          &          & \omega\mathrm{e}^{-\mathrm{i}t\delta} &
 \end{bmatrix}\to
 \begin{bmatrix}
-\delta &  &  & \omega &  \\
- &  & \omega_p &  &  \\
- & \omega_p &  & \omega_p &  \\
-\omega &  & \omega_p &  & \omega \\
- &  &  & \omega & \delta
+\delta &          &          & \omega   &        \\
+&          & \omega_p &          &        \\
+& \omega_p &          & \omega_p &        \\
+\omega &          & \omega_p &          & \omega \\
+&          &          & \omega   & \delta
 \end{bmatrix}
 \end{gathered}
 \end{equation}
-知乎文章 \cite{rotatecoordsys} 解释了旋转坐标系法的物理图景。
+知乎文章 \cite{355327986} 解释了旋转坐标系法的物理图景。
 
+\subsection{表象变换（相互作用绘景法）}
+实际上，相互作用绘景法是旋转坐标法的特例。我们常常会遇到受微扰的系统：
+\begin{equation}\label{key}
+H=H_0+V
+\end{equation}
+其中$ H_0 $为不含时的近似项，$ V $为含时的微扰项。
+\begin{remark}
+一般地，哈密顿量的近似项（在矩阵表示下）为对角项，表示各个本征态自身的演化过程，且与时间无关；而微扰项为非对角项，表示不同本征态之间的耦合，且与时间有关。
+\end{remark}
+在这种情况下，我们可以采用一种特殊的坐标旋转：令$ H_R=H_0 $。此时，哈密顿量由$ H_0+V $变为
+\begin{equation}\label{hstohi}
+H^\mathrm{I}=\eith{H_0}(H_0+V)\enith{H_0}-H_0=\eith{H_0}V\enith{H_0}
+\end{equation}
+等式成立是因为第一项$ H_0 $与自身的函数$ \eith{H_0} $对易，可提出并与第二项抵消。
+
+这一计算称作从薛定谔绘景到相互作用绘景的变换，$ H^\mathrm{I} $称作相互作用绘景下的哈密顿量，物理解释如下（另见 \cite{370513302,ctqm}）。
+\begin{remark}
+在量子力学中，力学量$ O $在$ t $时刻的期望为
+\begin{equation}\label{key}
+\ev{O(t)}=\ev{U(0)^\dagger OU(0)}{\psi(0)}
+\end{equation}
+此式反映了力学量随时间的演化，但有以下不同角度的理解：
+\begin{enumerate}
+\item 薛定谔绘景：认为力学量不随时间变化，但波函数（态矢）随时间变化，即$ \ev{O(t)}=\ev{U^\dagger\cdot O(0)\cdot U}{\psi(0)} $；
+\item 海森堡绘景：认为力学量不随时间变化，但波函数（态矢）随时间变化，即$ \ev{O(t)}=\ev{\cdot U(0)^\dagger O(0) U(0)\cdot}{\psi} $；
+\item 相互作用绘景：将哈密顿量拆成近似项和微扰项之和，认为力学量随时间按近似项部分变化，波函数（态矢）随时间按微扰项部分变化，即$ \ev{O(t)}=\ev{\enith{H_0}\cdot\enith{V}O(0)\eith{V}\cdot\eith{H_0}}{\psi(0)} $（此处为便于理解，认为$ V $也不含时，更一般的情况见 \cite{370513302}）。
+\end{enumerate}
+\end{remark}
+在应用中，旋转坐标法用于消去非对角项的相位，并添上对角项；相互作用绘景法则消去了对角项，而填上了非对角项的相位。实际上，两种解法确实互为逆运算，可以以本节的系统为例，先用相互作用绘景法变换表象，再用旋转坐标法变换表象，两次计算后将回到初始的哈密顿量（势能零点可能有所改变，这不影响物理实质）。
+
+因此，经变换后，哈密顿量有两种最简形式：一是相位形式，即哈密顿量表达式中不含对角项，全部转化为非对角项的相位；二是对角项形式，即哈密顿量表达式中不含相位，全部转化为对角项。在 \cite{PhysRevA.105.032417} 中，哈密顿量均表示为对角项形式；而老师的手稿推导中，哈密顿量均表示为相位形式。
+\begin{example}[张智明 \cite{zzmqo} 1.8节]
+二能级原子与单模光场相互作用的哈密顿量，也称Jaynes-Cummings模型（以下各式省略最左边的$ \hbar $，纠正了原书的符号错误）\newpage
+
+原始形式：
+\begin{equation}\label{key}
+\omega a^\dagger a+\frac{1}{2}(\omega_e-\omega_g)(\ketbra{e}{e}-\ketbra{g}{g})+g(a^\dagger \ketbra{g}{e}+\hc)
+\end{equation}
+\begin{equation}\label{key}
+\frac{1}{2}(\omega_e-\omega_g)(\ketbra{e}{e}-\ketbra{g}{g})+\Omega(\eit{\omega}\ketbra{g}{e}+\hc)
+\end{equation}
+相位形式：
+\begin{equation}\label{key}
+g(a^\dagger\enit{(\omega_e-\omega_g-\omega)}\ketbra{g}{e}+\hc)
+\end{equation}
+\begin{equation}\label{key}
+\Omega(\enit{(\omega_e-\omega_g-\omega)}\ketbra{g}{e}+\hc)
+\end{equation}
+对角形式：
+\begin{equation}\label{key}
+\frac{1}{2}(\omega_e-\omega_g-\omega)(\ketbra{e}{e}-\ketbra{g}{g})+g(a^\dagger \ketbra{g}{e}+\hc)
+\end{equation}
+\begin{equation}\label{key}
+\frac{1}{2}(\omega_e-\omega_g-\omega)(\ketbra{e}{e}-\ketbra{g}{g})+\Omega(\ketbra{g}{e}+\hc)
+\end{equation}
+
+\begin{table}[]
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{ll}
+$\omega a^\dagger a+\frac{1}{2}(\omega_e-\omega_g)(\ketbra{e}{e}-\ketbra{g}{g})+g(a^\dagger \ketbra{g}{e}+\hc)$ & $\frac{1}{2}(\omega_e-\omega_g)(\ketbra{e}{e}-\ketbra{g}{g})+\Omega(\eit{\omega}\ketbra{g}{e}+\hc)$ \\
+$g(a^\dagger\enit{(\omega_e-\omega_g-\omega)}\ketbra{g}{e}+\hc)$                                                & $\Omega(\enit{(\omega_e-\omega_g-\omega)}\ketbra{g}{e}+\hc)$                                        \\
+$\frac{1}{2}(\omega_e-\omega_g-\omega)(\ketbra{e}{e}-\ketbra{g}{g})+g(a^\dagger \ketbra{g}{e}+\hc)$             & $\frac{1}{2}(\omega_e-\omega_g-\omega)(\ketbra{e}{e}-\ketbra{g}{g})+\Omega(\ketbra{g}{e}+\hc)$
+\end{tabular}}
+\end{table}
+其中 $ \frac{1}{2}(\omega_e-\omega_g)(\ketbra{e}{e}-\ketbra{g}{g}) $ 的由来：我们一般写$ \omega\ketbra{g}{g}+\omega_e\ketbra{e}{e} $，由于势能零点可以任取，所以也可写成$ (\omega_g-\omega_e)\ketbra{g}{g} $或$ (\omega_e-\omega_g)\ketbra{e}{e} $，二者线性叠加即得$ \frac{1}{2}(\omega_e-\omega_g)(\ketbra{e}{e}-\ketbra{g}{g}) $。这样写的好处是可以与Pauli算符$ \sigma_z $对应起来（\cite{zzmqo}全是用Pauli算符表示的）。
+\end{example}
+\subsection{表象变换（简正坐标法）}
+求解哈密顿量的本征值和本征向量（厄米算符的特征值均为实数，且不同特征值对应的本征向量彼此正交），将本征向量选取为新基，此时哈密顿量的表示矩阵为对角阵。具体计算见下节。
 \subsection{大失谐近似求有效哈密顿量}
 \begin{lemma}[有效哈密顿量公式]\label{heff}
 当系统在相互作用绘景下表示的哈密顿量可表示为
@@ -240,7 +292,9 @@ H_{\eff}=\sum_{m,n}\frac{1}{\hbar}\frac{1}{2}\left(\frac{1}{\omega_m}+\frac{1}{\
 \begin{proof}
 这是论文\cite{James2007EffectiveHT}的主要结果，也可见\cite{zzmqo}的附录。
 \end{proof}
-
+\begin{remark}
+老师的计算册中给出了三种解法，我只需掌握此处的公式法即可。
+\end{remark}
 现考虑Λ型三能级原子（即有基态$ \ket{g},\ket{e} $和激发态$ \ket{i} $）与光场（光频率为$ \omega $）的Raman相互作用，欲求其有效哈密顿量。
 
 此类光与物质相互作用是量子光学的核心问题，有半经典理论和全量子理论两种处理方式。其区别在于：半经典理论将其原子视为量子化的（原子在分立的能级之间跃迁），而光场（电磁场）视为经典场（用频率、场强、电偶极矩等描述）；而全量子理论将原子和光场均视为量子化的，光场用产生/湮灭算符描述。在半经典理论中，本系统的哈密顿量为
@@ -252,18 +306,18 @@ H=\omega_g\ketbra{g}{g}+\omega_i\ketbra{i}{i}+\omega a^\dagger a+(\lambda_1\eit{
 H=\omega_g\ketbra{g}{g}+\omega_i\ketbra{i}{i}+\omega_e\ketbra{e}{e}+\omega a^\dagger a+(\lambda_1a^\dagger\ketbra{g}{i}+\lambda_2a^\dagger\ketbra{e}{i}+\hc)
 \end{equation}
 注意$ \ketbra{a}{b} $表示从$ \ket{b} $到$ \ket{a} $的跃迁；$ a^\dagger $和$ a $表示光子的产生与湮灭，如$ \lambda_1a^\dagger\ketbra{g}{i} $表示$ \ket{i} $态下落到$ \ket{g} $态，同时放出一个光子（从而能量守恒），该过程的（耦合）强度为$ \lambda_1 $。实际上，能量不守恒的过程（如$ \lambda_1a\ketbra{g}{i} $）也可能发生，但概率很小，不予考虑（即\emph{旋波近似}(rotating wave approximation)）。
-本次计算采用全量子理论计算，而以后将采取半经典理论。
+本次计算采用全量子理论，而以后将采取半经典理论。
 
 由原始哈密顿量求有效哈密顿量的步骤如下：
 \begin{enumerate}
-\item 找出哈密顿量的近似项$ H_0^S $和微扰项$ V^S $，由定理 \ref{hstohi} 算出相互作用绘景下的哈密顿量$ H^\mathrm{I} $；
+\item 找出哈密顿量的近似项$ H_0^S $和微扰项$ V^S $，算出相互作用绘景下的哈密顿量$ H^\mathrm{I} $；
 \item 将$ H^\mathrm{I} $左边整理成定理 \ref{heff} 中等式左边的形式进行计算，再考虑大失谐情况，忽略含激发态$ \ket{i} $的项，得到有效哈密顿量$ H_{\eff} $。
 \end{enumerate}
-在本问题中，利用定理 \ref{hstohi}，得相互作用绘景下的哈密顿量为
+在本问题中，相互作用绘景下的哈密顿量为
 \begin{equation}\label{key}
 H^\mathrm{I}=e^{it(\omega-\omega_i+\omega_g)}\lambda_1 a^\dagger\ketbra{g}{i}+e^{it(\omega-\omega_i+\omega_e)}\lambda_2 a^\dagger\ketbra{e}{i}+\hc.
 \end{equation}
-而有效哈密顿量为
+现假设系统处于大失谐状态，且$ \omega_g=\omega_e $，设失谐量为$ \omega-\omega_i+\omega_e=\Delta $。可得有效哈密顿量为
 \begin{equation}\label{key}
 H_{\eff}=\frac{1}{\hbar\Delta}a^\dagger a\left(\lambda_1^2\ketbra{g}{g}+\lambda_2^2\ketbra{e}{e}+\lambda_1\lambda_2(\ketbra{e}{g}+\hc)\right).
 \end{equation}
@@ -281,9 +335,20 @@ H_{\eff}=\frac{1}{\hbar\Delta}a^\dagger a\left(\lambda_1^2\ketbra{g}{g}+\lambda_
 \item 写出偶极偶极相互作用和范德瓦尔斯相互作用的哈密顿量$ H_{\mathrm{dd}},H_{\mathrm{vdW}} $；
 \item 将$ H_{\mathrm{novdW}}^\mathrm{I} $视为近似项，$ H_{\mathrm{vdW}} $视为微扰项，再次变换绘景，并利用旋波近似等化简得到哈密顿量$ H^{\mathrm{II}} $；
 \item 通过求解特征方程，将$ H^{\mathrm{II}} $中含的$ \omega_p $项对应的子矩阵对角化，并将这一（$ H^{\mathrm{II}} $以归一化特征向量为基的）对角矩阵视为近似项，将该基下的含$ \omega_j $项视为微扰项，再次变换绘景得到哈密顿量$ H^{\mathrm{III}} $；
-\item 最后，通过定理 \ref{heff} 结合大失谐条件求得有效哈密顿量$ H_{\mathrm{eff}} $。
+\item 最后，通过定理 \ref{heff} 结合大失谐条件求得有效哈密顿量$ H_{\mathrm{eff}} $。此外，我们做出以下假设：
+\begin{equation}\label{key}
+\mathcal{U}_{j,j+1}=\Delta\gg\delta,\omega_p\gg\omega=\omega_j.
+\end{equation}
 \end{enumerate}
 \subsection{第一步}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.3\linewidth]{figures/screenshot001}
+\caption{原子能级示意图（两个原子的能级相同）}
+\label{fig:screenshot001}
+\end{figure}
+
 \begin{equation}\label{key}
 H_{\mathrm{novdW},j}^\mathrm{S}=\omega_g\ketbra{g}{g}_j+\omega_i\ketbra{r}{r}_j+\omega_e\ketbra{e}{e}_j+\omega a^\dagger a+(\lambda_1a^\dagger\ketbra{g}{r}_j+\lambda_2a^\dagger\ketbra{e}{r}_j+\hc)
 \end{equation}
@@ -293,7 +358,7 @@ H_{\mathrm{novdW},j}^\mathrm{I}=\mathrm{e}^{\mathrm{i}t(\omega_j-\omega_r+\omega
 \\:=\mathrm{e}^{\mathrm{i}t\delta}\lambda_1 a^\dagger\ketbra{g}{r}_j+\mathrm{e}^{\mathrm{i}t\Delta}\lambda_2 a^\dagger\ketbra{e}{r}_j+\hc.
 \end{multline}
 \begin{equation}
-H_{\mathrm{novdW},j}^\mathrm{I}=\mathrm{e}^{\mathrm{i}t\delta}\omega_j\ketbra{g}{r}_j+\mathrm{e}^{\mathrm{i}t\Delta}\omega_p\ketbra{e}{r}_j+\hc.
+H_{\mathrm{novdW},j}^\mathrm{I}=\hbar(\mathrm{e}^{\mathrm{i}t\delta}\omega_j\ketbra{g}{r}_j+\mathrm{e}^{\mathrm{i}t\Delta}\omega_p\ketbra{e}{r}_j+\hc).
 \end{equation}
 \subsection{第三步}
 \begin{multline}
@@ -312,6 +377,13 @@ H^\mathrm{I}
 +\omega_p\mathrm{e}^{\mathrm{i}t\Delta}\ketbra{re}{rr}
 +\hc.
 \end{multline}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.3\linewidth]{figures/screenshot002}
+\caption{系统量子态转移图解，注意1,7项由于解耦而消去}
+\label{fig:screenshot002}
+\end{figure}
 \subsection{第四步}
 \begin{equation}\label{key}
 H_{\mathrm{dd}}=J(\ketbra{rr}{+}+\hc)
@@ -320,20 +392,74 @@ H_{\mathrm{dd}}=J(\ketbra{rr}{+}+\hc)
 H_{\mathrm{vdW}}=\mathcal{U}\ketbra{rr}{rr}
 \end{equation}
 \subsection{第五步}
+将vdW视为微扰，将对角项转化为相位，可得每个含$ \bra{rr} $的项（第3,6,9,12项）需减小相位$ \Delta $（即乘$ \enith{\Delta} $）。注意到$ \Delta=\mathcal{U}\gg\delta, $，于是第6,12项的相位消失，而第3,9项近似为0。再注意到$ \Delta\gg\omega_p $，根据旋波近似，第4,5,10,11项近似为0。此时，由状态转移图可见，第1,7项已与其余转移过程解耦，由于我们认为初始状态为$ \ket{eg} $，故第1,7项也近似为0。综上，$ H^{\mathrm{I}} $的表达式只剩$ 4\times 2 $项，为
 \begin{equation}\label{key}
-H^{\mathrm{II}}=\omega_1\mathrm{e}^{\mathrm{it\delta}}\ketbra{ge}{re}
+H^{\mathrm{II}}=\hbar(\omega_1\mathrm{e}^{\mathrm{it\delta}}\ketbra{ge}{re}
 +\omega_p\ketbra{er}{rr}
 +\omega_2\mathrm{e}^{\mathrm{it\delta}}\ketbra{eg}{er}
-+\omega_p\ketbra{re}{rr}+\hc
++\omega_p\ketbra{re}{rr}+\hc)
 \end{equation}
 \subsection{第六步}
+上式中不含时项为$ H_p=\hbar(\omega_p\ketbra{er}{rr}+\omega_p\ketbra{re}{rr}+\hc) $，含时项为$ H_\omega=\hbar(\omega_1\mathrm{e}^{\mathrm{it\delta}}\ketbra{ge}{re}+\omega_2\mathrm{e}^{\mathrm{it\delta}}\ketbra{eg}{er}) $。自然地，我们希望分别将二者作为近似项和微扰项，进行相互作用绘景法表象变换。然而，$ H_p $并不是对角项。因此我们先将$ H_p $对角化。
+
+易知$ H_p $在当前基下的表示矩阵为
+$ \hbar\begin{bmatrix}
+& \omega_p &          \\
+\omega_p &          & \omega_p \\
+& \omega_p &
+\end{bmatrix} $，
+求解特征方程$ H_p\ket{\psi}=E\ket{\psi} $得
+\begin{equation}\label{key}
+\begin{gathered}
+E_+=\sqrt{2}\omega_p,\quad\ket{\psi_+}=\frac{1}{2}\ket{er}+\frac{1}{\sqrt{2}}\ket{rr}+\frac{1}{2}\ket{re},\\
+E_0=0,\quad\ket{\psi_0}=\frac{1}{\sqrt{2}}\ket{er}-\frac{1}{\sqrt{2}}\ket{re},\\
+E_-=-\sqrt{2}\omega_p,\quad\ket{\psi_-}=\frac{1}{2}\ket{er}-\frac{1}{\sqrt{2}}\ket{rr}+\frac{1}{2}\ket{re}.
+\end{gathered}
+\end{equation}
+反解得
+\begin{equation}\label{key}
+\begin{gathered}
+\ket{er}=\frac{1}{2}\ket{\psi_+}+\frac{1}{\sqrt{2}}\ket{\psi_0}+\frac{1}{2}\ket{\psi_-},\\
+\ket{rr}=\frac{1}{\sqrt{2}}\ket{\psi_+}-\frac{1}{\sqrt{2}}\ket{\psi_-},\\
+\ket{re}=\frac{1}{2}\ket{\psi_+}-\frac{1}{\sqrt{2}}\ket{\psi_0}+\frac{1}{2}\ket{\psi_-}.
+\end{gathered}
+\end{equation}
+于是
+\begin{equation}\label{key}
+\begin{gathered}
+H_p=\sum_{n=+,0,-}E_n\ketbra{\psi_n}{\psi_n},\\
+H_\omega=\hbar\omega\eit{\delta}\left(\ket{ge}\left(\frac{1}{2}\bra{\psi_+}-\frac{1}{\sqrt{2}}\bra{\psi_0}+\frac{1}{2}\bra{\psi_-}\right)+\ket{eg}\left(\frac{1}{2}\bra{\psi_+}+\frac{1}{\sqrt{2}}\bra{\psi_0}+\frac{1}{2}\bra{\psi_-}\right)\right),
+\end{gathered}
+\end{equation}
+代入 \ref{hstohi} 得
 \begin{multline}
 H^{\mathrm{III}}=\hbar\omega\Bigg(\ket{ge}\left(\frac{1}{2}\bra{\psi_+}\mathrm{e}^{\mathrm{i}t(\delta-\sqrt{2}\omega_p)}-\frac{1}{\sqrt{2}}\bra{\psi_0}\eit{\delta}+\frac{1}{2}\bra{\psi_-}\eit{(\delta+\sqrt{2}\omega_p)}\right)\\
 +\ket{eg}\left(\frac{1}{2}\bra{\psi_+}\mathrm{e}^{\mathrm{i}t(\delta-\sqrt{2}\omega_p)}+\frac{1}{\sqrt{2}}\bra{\psi_0}\eit{\delta}+\frac{1}{2}\bra{\psi_-}\eit{(\delta+\sqrt{2}\omega_p)}\right)\Bigg)+\hc
 \end{multline}
 \subsection{第七步}
+\begin{multline}
+H_{\eff}'=\omega^2\Bigg(\Bigg(\frac{1}{2}\left(\frac{1}{\delta-\sqrt{2}\omega_p}+\frac{1}{\delta}\right)\left(-\frac{1}{2\sqrt{2}}\ketbra{\psi_+}{\psi_0}\right)\enit{\sqrt{2}\omega_p}\\
++\frac{1}{2}\left(\frac{1}{\delta-\sqrt{2}\omega_p}+\frac{1}{\delta+\sqrt{2}\omega_p}\right)\left(-\frac{1}{2\sqrt{2}}\ketbra{\psi_+}{\psi_-}\right)\enit{\sqrt{2}\omega_p}\\
++\frac{1}{2}\left(\frac{1}{\delta}+\frac{1}{\delta+\sqrt{2}\omega_p}\right)\left(-\frac{1}{2\sqrt{2}}\ketbra{\psi_0}{\psi_-}\right)\enit{\sqrt{2}\omega_p}\Bigg)\times 2\\
++\frac{1}{\delta-\sqrt{2}\omega_p}\left(-\frac{1}{4}\ketbra{eg}{ge}\right)+\frac{1}{\delta}\left(\frac{1}{2}\ketbra{eg}{ge}\right)+\frac{1}{\delta+\sqrt{2}\omega_p}\left(-\frac{1}{4}\ketbra{eg}{ge}\right)+\hc\\
++\frac{1}{\delta-\sqrt{2}\omega_p}\left(\frac{1}{4}(\ketbra{\psi_+}{\psi_+}-\ketbra{ge}{ge})+\frac{1}{4}(\ketbra{\psi_+}{\psi_+}-\ketbra{eg}{eg})\right)\\
++\frac{1}{\delta}\left(\frac{1}{2}(\ketbra{\psi_0}{\psi_0}-\ketbra{ge}{ge})+\frac{1}{2}(\ketbra{\psi_0}{\psi_0}-\ketbra{eg}{eg})\right)\\
++\frac{1}{\delta+\sqrt{2}\omega_p}\left(\frac{1}{4}(\ketbra{\psi_-}{\psi_-}-\ketbra{ge}{ge})+\frac{1}{4}(\ketbra{\psi_-}{\psi_-}-\ketbra{eg}{eg})\right)\Bigg)
+\end{multline}
+在大失谐条件下，只考虑只含e,g的项，故有效哈密顿量为
+\begin{multline}
+H_{\eff}=\omega^2\Bigg(\frac{1}{\delta-\sqrt{2}\omega_p}\left(-\frac{1}{4}\ketbra{eg}{ge}\right)+\frac{1}{\delta}\left(-\frac{1}{2}\ketbra{eg}{ge}\right)+\frac{1}{\delta+\sqrt{2}\omega_p}\left(-\frac{1}{4}\ketbra{eg}{ge}\right)+\hc\\
++\frac{1}{\delta-\sqrt{2}\omega_p}\left(\frac{1}{4}(-\ketbra{ge}{ge}-\ketbra{eg}{eg})\right)\\
++\frac{1}{\delta}\left(\frac{1}{2}(-\ketbra{ge}{ge}-\ketbra{eg}{eg})\right)\\
++\frac{1}{\delta+\sqrt{2}\omega_p}\left(\frac{1}{4}(-\ketbra{ge}{ge}-\ketbra{eg}{eg})\right)\Bigg)
+\end{multline}
+故论文 \cite{PhysRevA.105.032417} 中的耦合系数
 \begin{equation}\label{key}
-H_{\eff}=\hbar\omega\Bigg(	cv\Bigg)
+J_{12}=-\frac{\omega^2}{4}\left(\frac{1}{\delta-\sqrt{2}\omega_p}-\frac{2}{\delta}+\frac{1}{\delta+\sqrt{2}\omega_p}\right)=\frac{\omega^2\omega_p^2}{\delta^3-2\delta\omega_p^2}
+\end{equation}
+而两个Stark移位的系数均为
+\begin{equation}\label{key}
+V=-\frac{\omega^2}{4}\left(\frac{1}{\delta-\sqrt{2}\omega_p}+\frac{2}{\delta}+\frac{1}{\delta+\sqrt{2}\omega_p}\right)
 \end{equation}
 \section[2022.10.28第三次]{2022.10.28第三次：SWAP门的实现}
 \part{杂项}
